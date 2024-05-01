@@ -13,7 +13,6 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { LoggerService } from 'src/common/logger';
 import { JwtAuthGuard, RolesGuard } from '../auth/guard';
-import { Request } from 'express';
 import { Roles } from '../auth/decorators';
 
 @Controller('users')
@@ -31,8 +30,7 @@ export class UsersController {
   @UseGuards(RolesGuard)
   @Roles('ADMIN')
   @Get()
-  findAll(@Req() request: Request) {
-    this.logger.log('Fetching all users for ' + request.user);
+  findAll() {
     return this.usersService.findAll();
   }
 
