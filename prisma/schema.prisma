@@ -31,12 +31,11 @@ model User {
   contactInfo String?
 }
 
-
 model RawMaterial {
-  id           Int      @id @default(autoincrement())
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-  isDeleted    Boolean  @default(false)
+  id           Int       @id @default(autoincrement())
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  isDeleted    Boolean   @default(false)
   name         String
   quantity     Float
   unit         String
@@ -47,12 +46,11 @@ model RawMaterial {
 }
 
 model Supplier {
-  id          Int      @id @default(autoincrement())
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  isDeleted   Boolean  @default(false)
-  name        String
-  contactInfo String?
+  id           Int           @id @default(autoincrement())
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  isDeleted    Boolean       @default(false)
+  name         String
+  contactInfo  String?
   rawMaterials RawMaterial[]
 }
-
