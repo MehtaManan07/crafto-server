@@ -12,8 +12,9 @@ import {
 import { RawMaterialsService } from './raw-materials.service';
 import { CreateRawMaterialDto } from './dto/create-raw-material.dto';
 import { UpdateRawMaterialDto } from './dto/update-raw-material.dto';
-import { JwtAuthGuard } from '../auth/guard';
+import { JwtAuthGuard, RolesGuard } from '../auth/guard';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { Roles } from '../auth/decorators';
 
 @Controller('raw-materials')
 @ApiTags('Raw materials')
@@ -48,5 +49,12 @@ export class RawMaterialsController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.rawMaterialsService.remove(+id);
+  }
+
+  @Delete('/hard/:id')
+  @UseGuards(RolesGuard)
+  @Roles('ADMIN')
+  hardRemove(@Param('id') id: string) {
+    return this.rawMaterialsService.hardRemove(+id);
   }
 }

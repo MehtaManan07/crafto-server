@@ -3,6 +3,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { SwaggerTheme, SwaggerThemeNameEnum } from 'swagger-themes';
 
 const setupSwagger = (app: INestApplication) => {
+  const isMorning = new Date().getHours() >= 8 && new Date().getHours() < 20;
   const config = new DocumentBuilder()
     .setTitle('Api docs')
     .setDescription('The API description')
@@ -22,7 +23,9 @@ const setupSwagger = (app: INestApplication) => {
   const theme = new SwaggerTheme();
   const options = {
     explorer: true,
-    customCss: theme.getBuffer(SwaggerThemeNameEnum.DARK),
+    customCss: theme.getBuffer(
+      SwaggerThemeNameEnum[isMorning ? 'CLASSIC' : 'DARK'],
+    ),
   };
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api/docs', app, document, options);

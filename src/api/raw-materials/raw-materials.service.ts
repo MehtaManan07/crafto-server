@@ -63,4 +63,9 @@ export class RawMaterialsService {
     if (!material) throw new Error('Raw material not found');
     return;
   }
+
+  async hardRemove(id: number) {
+    await this.prisma.rawMaterial.delete({ where: { id } });
+    return;
+  }
 }
