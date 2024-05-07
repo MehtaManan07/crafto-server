@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateRawMaterialDto } from './dto/create-raw-material.dto';
 import { UpdateRawMaterialDto } from './dto/update-raw-material.dto';
 import { PrismaService } from 'nestjs-prisma';
@@ -45,7 +45,7 @@ export class RawMaterialsService {
     const material = await this.prisma.rawMaterial.findUnique({
       where: { id },
     });
-    if (!material) throw new Error('Raw material not found');
+    if (!material) throw new NotFoundException('Raw material not found');
     return new RawMaterialEntity(material);
   }
 
@@ -57,7 +57,7 @@ export class RawMaterialsService {
       where: { id },
       data: updateRawMaterialDto,
     });
-    if (!material) throw new Error('Raw material not found');
+    if (!material) throw new NotFoundException('Raw material not found');
     return new RawMaterialEntity(material);
   }
 
@@ -66,7 +66,7 @@ export class RawMaterialsService {
       where: { id },
       data: { isDeleted: true },
     });
-    if (!material) throw new Error('Raw material not found');
+    if (!material) throw new NotFoundException('Raw material not found');
     return;
   }
 
