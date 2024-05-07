@@ -29,7 +29,13 @@ export class RawMaterialsService {
 
   async findAll(name: string): Promise<RawMaterialEntity[]> {
     const materials = await this.prisma.rawMaterial.findMany({
-      where: { name: { contains: name } },
+      where: {
+        OR: [
+          { name: { contains: name } },
+          { description: { contains: name } },
+          { category: { contains: name } },
+        ],
+      },
     });
     const entities = materials.map((item) => new RawMaterialEntity(item));
     return entities;
@@ -67,5 +73,33 @@ export class RawMaterialsService {
   async hardRemove(id: number) {
     await this.prisma.rawMaterial.delete({ where: { id } });
     return;
+  }
+
+  async findByCategory(category: string) {
+    const materials = await this.prisma.rawMaterial.findMany({
+      where: { category: { contains: category } },
+    });
+    const entities = materials.map((item) => new RawMaterialEntity(item));
+    return entities;
+  }
+
+  async fetchCategoryNames(): Promise<string[]> {
+    // Fetch all unique category names
+    const categories = await this.prisma.rawMaterial.findMany({
+      select: { category: true },
+      distinct: ['category'],
+    });
+    const uniqueCategories = categories.map((item) => item.category);
+    return uniqueCategories;
+  }
+
+  async groupByCategories() {
+    const materials = await this.prisma.rawMaterial.groupBy({
+      by: ['category'],
+      _count: { name: true },
+    });
+    this.logger.log(materials);
+
+    return materials;
   }
 }

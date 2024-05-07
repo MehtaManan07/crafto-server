@@ -10,6 +10,7 @@ import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
   unit         String
   pricePerUnit Float
   description  String?
+  category     String
   supplierId   Int?
   supplier     Supplier? @relation(fields: [supplierId], references: [id])
  */
@@ -24,7 +25,7 @@ export class CreateRawMaterialDto {
 
   @IsString()
   @IsNotEmpty()
-  unit: string;
+  size: string;
 
   @IsNumber()
   @IsNotEmpty()
@@ -33,6 +34,10 @@ export class CreateRawMaterialDto {
   @IsNumber()
   @IsNotEmpty()
   quantity: number;
+
+  @IsString()
+  @IsNotEmpty()
+  category: string;
 
   //   @IsNumber()
   //   @IsNotEmpty()

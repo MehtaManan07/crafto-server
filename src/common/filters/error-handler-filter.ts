@@ -6,9 +6,13 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
+import { LoggerService } from '../logger';
 
 @Catch()
 export class ErrorHandler implements ExceptionFilter {
+  constructor(private logger: LoggerService) {
+    this.logger.setContext(ErrorHandler.name);
+  }
   catch(exception: any, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse();
@@ -43,6 +47,7 @@ export class ErrorHandler implements ExceptionFilter {
       // Log the internal server errors
       console.error(exception);
     }
+    this.logger.error(JSON.stringify(errorResponse));
 
     response.status(status).json(errorResponse);
   }

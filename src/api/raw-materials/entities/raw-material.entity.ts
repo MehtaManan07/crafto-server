@@ -34,5 +34,8 @@ export class RawMaterialEntity implements RawMaterial {
   supplierId: number;
 
   @ApiProperty()
-  unit: string;
+  size: string;
+
+  @ApiProperty()
+  category: string;
 }

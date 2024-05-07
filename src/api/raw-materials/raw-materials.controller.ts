@@ -13,7 +13,7 @@ import { RawMaterialsService } from './raw-materials.service';
 import { CreateRawMaterialDto } from './dto/create-raw-material.dto';
 import { UpdateRawMaterialDto } from './dto/update-raw-material.dto';
 import { JwtAuthGuard, RolesGuard } from '../auth/guard';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { Roles } from '../auth/decorators';
 
 @Controller('raw-materials')
@@ -29,6 +29,7 @@ export class RawMaterialsController {
   }
 
   @Get()
+  @ApiQuery({ name: 'name', type: String })
   findAll(@Query() params: { name: string }) {
     return this.rawMaterialsService.findAll(params.name);
   }
@@ -56,5 +57,21 @@ export class RawMaterialsController {
   @Roles('ADMIN')
   hardRemove(@Param('id') id: string) {
     return this.rawMaterialsService.hardRemove(+id);
+  }
+
+  @Get('/category/all')
+  fetchCategoryNames() {
+    return this.rawMaterialsService.fetchCategoryNames();
+  }
+
+  @Get('category/group')
+  groupByCategories() {
+    return this.rawMaterialsService.groupByCategories();
+  }
+
+  @Get('/category/search')
+  @ApiQuery({ name: 'category', type: String })
+  findByCategory(@Query() params: { category: string }) {
+    return this.rawMaterialsService.findByCategory(params.category);
   }
 }

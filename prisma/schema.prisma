@@ -5,7 +5,8 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearch", "fullTextIndex"]
 }
 
 datasource db {
@@ -36,13 +37,16 @@ model RawMaterial {
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
   isDeleted    Boolean   @default(false)
-  name         String
+  name         String    @unique
   quantity     Float
-  unit         String
+  size         String
   pricePerUnit Float
+  category     String
   description  String?
   supplierId   Int?
   supplier     Supplier? @relation(fields: [supplierId], references: [id])
+
+  @@fulltext([category])
 }
 
 model Supplier {

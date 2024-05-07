@@ -25,8 +25,8 @@ export class SuccessResponseInterceptor<T>
     return next.handle().pipe(
       map((data) => ({
         success: true,
-        data,
         count: Array.isArray(data) ? data.length : undefined,
+        data,
       })),
     );
   }
